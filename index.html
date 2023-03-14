@@ -8,6 +8,33 @@
   <body>
     <a href="#" onclick="gigya.accounts.showScreenSet({screenSet:'Default-LiteRegistration'});">Subscribe Here!</a>&nbsp;&nbsp;|&nbsp;&nbsp;
     <a href="#" onclick="gigya.accounts.showScreenSet({screenSet:'Default-RegistrationLogin', startScreen:'gigya-register-screen'});">Register</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-    <a href="#" onclick="gigya.accounts.showScreenSet({screenSet:'Default-LiteRegistration'});">Login</a>
+    <a href="#" onclick="gigya.accounts.showScreenSet({screenSet:'Default-RegistrationLogin'});">Login</a>
+    <span id="logout" hidden>
+      &nbsp;&nbsp;|&nbsp;&nbsp;<a href="#" onclick="logout();">Logout</a>
+    </span>
   </body>
+  <script type="text/javascript" lang="javascript">
+      function logout() {
+        gigya.accounts.logout({callback:function (response) {
+          if (response.errorCode == 0) {
+            document.getElementById("logout").hidden=true;
+          }
+          else {
+            alert('Error: ' + response.errorMessage);
+          }
+        }});
+      }
+      
+      gigya.accounts.getAccountInfo({callback:function (response) {
+        if (response.errorCode == 0) {
+          document.getElementById("logout").hidden=false;
+        }
+      }});
+      
+      gigya.socialize.addEventHandlers({
+        onLogin: function() {
+          document.getElementById("logout").hidden=false;
+        }
+      });
+   </script>
 </html>
